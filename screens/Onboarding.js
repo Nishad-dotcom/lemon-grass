@@ -31,11 +31,11 @@ export default function OnboardingScreen({ onComplete }) {
       return;
     }
 
- 
+    // Save to AsyncStorage
     await AsyncStorage.setItem("isOnboardingComplete", "true");
     await AsyncStorage.setItem("userData", JSON.stringify({ firstName, email }));
 
-    onComplete(); 
+    onComplete(); // Notify App.js to switch to the Profile screen
   };
 
   return (
@@ -68,4 +68,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-   
+    padding: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 30,
+    textAlign: "center",
+  },
+  input: {
+    height: 50,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+});
