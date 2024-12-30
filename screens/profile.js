@@ -1,70 +1,86 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Button,
-  Image,
-  Alert,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from "expo-image-picker";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Button, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-export default function ProfileScreen({ navigation }) {
-  const [userData, setUserData] = useState({ firstName: "", email: "" });
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [profileImage, setProfileImage] = useState(null);
+const Profile = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
 
- 
-  useEffect(() => {
-    const loadUserData = async () => {
-      const storedData = await AsyncStorage.getItem("userData");
-      if (storedData) {
-        setUserData(JSON.parse(storedData));
-      }
-    };
-    loadUserData();
-  }, []);
-
- 
-  const pickImage = async () => {
+  const handleSelectImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      aspect: [1, 1],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setProfileImage(result.uri);
+      setProfilePicture(result.assets[0].uri);
     }
-  };
-
-  const handleSaveChanges = async () => {
-    if (!/^\d{10}$/.test(phoneNumber)) {
-      Alert.alert("Error", "Enter a valid 10-digit phone number.");
-      return;
-    }
-
-    const updatedData = { ...userData, phoneNumber, profileImage };
-    await AsyncStorage.setItem("userData", JSON.stringify(updatedData));
-    Alert.alert("Success", "Profile updated successfully!");
-  };
-
-  const handleLogout = async () => {
-    await AsyncStorage.clear();
-    navigation.replace("Onboarding");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Profile</Text>
+      <Text style={styles.heading}>Profile</Text>
       <Image
         source={
-          profileImage
-            ? { uri: profileImage }
-            : require("../assets/placeholder.png")
+          profilePicture
+            ? { uri: profilePicture }
+            : require('../assets/avatar-placeholder.png')
         }
-        style={styles.image}
+        style={styles.profileImage}
       />
-      <Button title="Pick an Image" onPr
+      <Button title="Select Profile Picture" onPress={handleSelectImage} />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your name"
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+      <View style={styles.buttonContainer}>
+        <Button title="Save" onPress={() => alert('Profile saved!')} />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+});
+
+export default Profile;

@@ -1,51 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import OnboardingScreen from "./screens/Onboarding";
-import ProfileScreen from "./screens/Profile";
+import React, { useReducer } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import OnboardingScreen from './screens/Onboarding';
+import ProfileScreen from './screens/Profile';
+import HomeScreen from './screens/Home';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
+
+const initialState = {
+  isOnboardingCompleted: false,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'COMPLETE_ONBOARDING':
+      return { ...state, isOnboardingCompleted: true };
+    default:
+      return state;
+  }
+};
 
 export default function App() {
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  
-  useEffect(() => {
-    const checkOnboardingStatus = async () => {
-      const status = await AsyncStorage.getItem("isOnboardingComplete");
-      setIsOnboardingComplete(status === "true"); // Convert string to boolean
-      setIsLoading(false);
-    };
-    checkOnboardingStatus();
-  }, []);
-
-  
-  if (isLoading) {
-    return null; 
-  }
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isOnboardingComplete ? (
-          <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{ headerShown: false }}
-          />
+        {state.isOnboardingCompleted ? (
+          <>
+            <Stack.Screen name="Home" options={{ headerShown: false }}>
+              {(props) => <HomeScreen {...props} />}
+            </Stack.Screen>
+            <Stack.Screen name="Profile" options={{ headerShown: false }}>
+              {(props) => <ProfileScreen {...props} />}
+            </Stack.Screen>
+          </>
         ) : (
-          <Stack.Screen
-            name="Onboarding"
-            options={{ headerShown: false }}
-          >
-            {(props) => (
-              <OnboardingScreen
-                {...props}
-                onComplete={() => setIsOnboardingComplete(true)}
-              />
-            )}
+          <Stack.Screen name="Onboarding" options={{ headerShown: false }}>
+            {(props) => <OnboardingScreen {...props} dispatch={dispatch} />}
           </Stack.Screen>
         )}
       </Stack.Navigator>
