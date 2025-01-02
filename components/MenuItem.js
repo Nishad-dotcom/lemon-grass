@@ -3,44 +3,46 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 
 const MenuItem = ({ item }) => {
   return (
-    <View style={styles.itemContainer}>
-      <Image source={{ uri: `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${item.image}?raw=true` }} style={styles.itemImage} />
-      <View style={styles.itemDetails}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemPrice}>${item.price}</Text>
-        <Text style={styles.itemDescription}>{item.description}</Text>
+    <View style={styles.menuItem}>
+      <Image source={item.image} style={styles.image} />
+      <View style={styles.details}>
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.price}>${item.price.toFixed(2)}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
+  menuItem: {
     flexDirection: 'row',
-    padding: 15,
-    margin: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    marginBottom: 20,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 5,
+    overflow: 'hidden',
   },
-  itemImage: {
-    width: 60,
-    height: 60,
-    marginRight: 10,
+  image: {
+    width: 100,
+    height: 100,
   },
-  itemDetails: {
+  details: {
     flex: 1,
+    padding: 10,
   },
-  itemName: {
+  name: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-  itemPrice: {
-    fontSize: 16,
-    color: '#888',
+  description: {
+    color: '#666',
+    marginBottom: 5,
   },
-  itemDescription: {
-    fontSize: 14,
-    color: '#555',
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ff6347',
   },
 });
 

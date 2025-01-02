@@ -1,21 +1,24 @@
 import React, { useReducer, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import OnboardingScreen from './screens/Onboarding';
-import ProfileScreen from './screens/Profile';
-import HomeScreen from './screens/Home';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import OnboardingScreen from './screens/OnboardingScreen';
+import SplashScreen from './screens/SplashScreen';
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 const Stack = createStackNavigator();
 
 const initialState = {
   isOnboardingCompleted: false,
+  showSplash: true,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'COMPLETE_ONBOARDING':
       return { ...state, isOnboardingCompleted: true };
+    case 'HIDE_SPLASH':
+      return { ...state, showSplash: false };
     default:
       return state;
   }
@@ -25,41 +28,43 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    // Check AsyncStorage to see if onboarding is completed
-    const checkOnboardingStatus = async () => {
-      const isCompleted = await AsyncStorage.getItem('isOnboardingCompleted');
-      if (isCompleted === 'true') {
-        dispatch({ type: 'COMPLETE_ONBOARDING' });
-      }
-    };
+    // Simulate Splash Screen
+    const timeout = setTimeout(() => {
+      dispatch({ type: 'HIDE_SPLASH' });
+    }, 2000); // 2 seconds
 
-    checkOnboardingStatus();
+    return () => clearTimeout(timeout);
   }, []);
-
-  const handleOnboardingComplete = async () => {
-    // Save onboarding completion status to AsyncStorage
-    await AsyncStorage.setItem('isOnboardingCompleted', 'true');
-    dispatch({ type: 'COMPLETE_ONBOARDING' });
-  };
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {state.isOnboardingCompleted ? (
-          <>
-            <Stack.Screen name="Home" options={{ headerShown: false }}>
-              {(props) => <HomeScreen {...props} />}
-            </Stack.Screen>
-            <Stack.Screen name="Profile" options={{ headerShown: false }}>
-              {(props) => <ProfileScreen {...props} />}
-            </Stack.Screen>
-          </>
-        ) : (
-          <Stack.Screen name="Onboarding" options={{ headerShown: false }}>
-            {(props) => (
-              <OnboardingScreen {...props} handleOnboardingComplete={handleOnboardingComplete} />
-            )}
+        {state.showSplash ? (
+          <Stack.Screen
+            name="Splash"
+            component={SplashScreen}
+            options={{ headerShown: false }}
+          />
+        ) : !state.isOnboardingCompleted ? (
+          <Stack.Screen
+            name="Onboarding"
+            options={{ headerShown: false }}
+          >
+            {(props) => <OnboardingScreen {...props} dispatch={dispatch} />}
           </Stack.Screen>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ headerShown: true }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

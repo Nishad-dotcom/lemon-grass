@@ -1,54 +1,43 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 
-const Banner = ({ onSearchChange }) => {
+const Banner = ({ searchQuery, setSearchQuery }) => {
   return (
-    <View style={styles.container}>
-      <Image source={require('../assets/restaurant_banner.png')} style={styles.image} />
-      <Text style={styles.title}>Little Lemon</Text>
-      <Text style={styles.subtitle}>Chicago</Text>
-      <Text style={styles.description}>We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</Text>
+    <View style={styles.banner}>
+      <Text style={styles.title}>Welcome to Little Lemon</Text>
+      <Text style={styles.subtitle}>Discover our delicious menu</Text>
       <TextInput
         style={styles.searchBar}
-        placeholder="Search for a dish"
-        onChangeText={onSearchChange}
+        placeholder="Search for a dish..."
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
+  banner: {
     padding: 20,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
+    backgroundColor: '#f8f8f8',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginBottom: 5,
   },
   subtitle: {
-    fontSize: 20,
-    color: '#777',
-  },
-  description: {
-    textAlign: 'center',
-    fontSize: 16,
-    marginVertical: 10,
+    fontSize: 18,
+    color: '#666',
+    marginBottom: 15,
   },
   searchBar: {
-    width: '80%',
-    height: 40,
+    width: '100%',
+    padding: 10,
+    borderRadius: 5,
     borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 20,
-    paddingLeft: 10,
-    marginTop: 15,
   },
 });
 

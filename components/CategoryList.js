@@ -1,44 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const categories = ['Starters', 'Mains', 'Desserts', 'Drinks'];
-
-const CategoryList = ({ onCategoryChange }) => {
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
-  const toggleCategory = (category) => {
-    setSelectedCategories((prev) => {
-      if (prev.includes(category)) {
-        return prev.filter((item) => item !== category);
-      } else {
-        return [...prev, category];
-      }
-    });
-  };
-
-  useEffect(() => {
-    onCategoryChange(selectedCategories);
-  }, [selectedCategories, onCategoryChange]);
-
+const Category = ({ category, isSelected, onPress }) => {
   return (
-    <ScrollView horizontal>
-      {categories.map((category) => (
-        <TouchableOpacity
-          key={category}
-          onPress={() => toggleCategory(category)}
-          style={{
-            backgroundColor: selectedCategories.includes(category) ? '#FFA500' : '#ddd',
-            padding: 10,
-            margin: 5,
-            borderRadius: 20,
-          }}>
-          <Text style={{ color: selectedCategories.includes(category) ? '#fff' : '#000' }}>
-            {category}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+    <TouchableOpacity
+      onPress={() => onPress(category)}
+      style={[
+        styles.category,
+        isSelected && styles.selectedCategory,
+      ]}
+    >
+      <Text style={styles.categoryText}>{category}</Text>
+    </TouchableOpacity>
   );
 };
 
-export default CategoryList;
+const styles = StyleSheet.create({
+  category: {
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginRight: 10,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  selectedCategory: {
+    backgroundColor: '#ff6347',
+    borderColor: '#ff6347',
+  },
+  categoryText: {
+    fontSize: 16,
+  },
+});
+
+export default Category;
