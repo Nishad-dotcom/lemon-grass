@@ -41,6 +41,90 @@ To learn more about developing your project with Expo, look at the following res
 
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- 📝 Project Overview
+Lemon Grass is a responsive and user-friendly React application designed for a restaurant where users can seamlessly order food, browse the menu, and reserve tables online. The app focuses on delivering a smooth digital dining experience with a modern UI.
+
+🎯 Key Features
+🍔 Online Food Ordering: Browse and add food items to the cart
+
+📅 Table Reservation: Select date, time, and number of guests
+
+🔍 Menu Filtering: Filter by category (e.g., veg, non-veg, drinks)
+
+🛒 Cart Management: Add/remove items, update quantities
+
+💻 Responsive Design: Works on desktop, tablet, and mobile
+
+⚛️ Built with React: Component-based architecture for reusability
+
+✅ Form Validation: Ensures valid table booking and checkout
+
+🧰 Tech Stack
+Frontend: React, JSX, CSS
+
+State Management: React useState / useEffect
+
+Routing: React Router (if used)
+
+Styling: CSS or Tailwind (based on your setup)
+
+Form Handling: Basic React form handling & validation
+
+📂 Project Structure (Example)
+pgsql
+Copy
+Edit
+LemonGrassApp/
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── App.js
+│   └── index.js
+├── package.json
+└── README.md
+🚀 How to Run Locally
+Clone the repository
+
+bash
+Copy
+Edit
+git clone https://github.com/your-username/lemon-grass-app.git
+Navigate to the project folder
+
+bash
+Copy
+Edit
+cd lemon-grass-app
+Install dependencies
+
+bash
+Copy
+Edit
+npm install
+Start the development server
+
+bash
+Copy
+Edit
+npm start
+📌 Use Cases
+Restaurant online ordering system
+
+Digital menu and table reservation
+
+React-based frontend for food businesses
+
+Let me know if you want to add screenshots, deployment instructions, or backend integration later!
+
+
+
+
+
+
+
+
+
 
 ## Join the community
 
